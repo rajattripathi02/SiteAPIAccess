@@ -1,0 +1,6 @@
+keyaccess.page_json:
+  path: '/page_json/{api_key}/{nid}'
+  defaults:
+    _controller: '\Drupal\keyaccess\Controller\KeyAccessController::getjsonresponse'
+  requirements:
+    _permission: 'access content'

@@ -1,0 +1,8 @@
+name: 'KeyAccess'
+type: module
+description: 'API KEY access to site pages'
+package: 'Development'
+version: '8.x-1.1'
+core: '8.x'
+project: 'accesskey'
+datestamp: 1568984441

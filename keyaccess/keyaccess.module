@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @file
+ * Adding a API_KEY field to an Site information form.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function keyaccess_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Get API KEY if saved.
+  $apiKey = \Drupal::state()->get('siteapikey');
+
+  if (!empty($apiKey)) {
+    $apiKeyValue = $apiKey;
+    // Update the button label.
+    $form['actions']['submit']['#value'] = t('Update Configuration');
+  }
+  else {
+    $apiKeyValue = 'No API Key yet';
+  }
+
+  // Add a textfield to enter site api key.
+  $form['siteapikey'] = [
+    '#type' => 'textfield',
+    '#title' => t('Site API Key'),
+    '#default_value' => $apiKeyValue,
+  ];
+
+  // Extra submit form handle.
+  $form['#submit'][] = 'site_apikey_submit';
+
+}
+
+/**
+ * Form Submit function.
+ */
+function site_apikey_submit(array $form, FormStateInterface $form_state) {
+  // Get API KEY saved.
+  $apiKey = $form_state->getValue('siteapikey');
+  if (!empty($apiKey)) {
+    // Set in a system variable.
+    \Drupal::state()->set('siteapikey', $apiKey);
+    // Set success message.
+    \Drupal::service('messenger')->addMessage(t('Site API Key @apiKey has been saved', ['@apiKey' => $apiKey]));
+  }
+}
